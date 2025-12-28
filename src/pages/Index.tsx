@@ -9,9 +9,10 @@ import { AdvertiserDisclosure } from '@/components/AdvertiserDisclosure';
 import { Footer } from '@/components/Footer';
 import { fetchQuotes, mockQuotes } from '@/lib/api';
 import { SearchParams, Quote } from '@/types/quote';
-import { ArrowRightLeft, Shield, Zap, TrendingUp, Sparkles, Globe, ArrowRight, LayoutGrid } from 'lucide-react';
+import { ArrowRightLeft, Shield, Zap, TrendingUp, Sparkles, Globe, ArrowRight, LayoutGrid,MessageSquare ,Info} from 'lucide-react';
 import { CategoryFilter } from '@/components/QuoteList';
 import { Button } from '@/components/ui/button';
+
 
 export default function Index() {
   const [searchParams, setSearchParams] = useState<SearchParams | null>(null);
@@ -71,16 +72,23 @@ export default function Index() {
                 <Sparkles className="w-4 h-4" />
                 <span>Real-time rates</span>
               </div>
-              <Link to="/components">
+              {/* <Link to="/components">
                 <Button variant="outline" size="sm" className="gap-2">
                   <LayoutGrid className="w-4 h-4" />
                   UI Components
                 </Button>
-              </Link>
+              </Link> */}
                <Link to="/aboutus">
                 <Button variant="outline" size="sm" className="gap-2">
-                  <LayoutGrid className="w-4 h-4" />
-                  About us
+                  <Info className="w-4 h-4" />
+                  About Us
+                </Button>
+              </Link>
+
+              <Link to="/feedback">
+                <Button variant="outline" size="sm" className="gap-2">
+                  <MessageSquare className="w-4 h-4" />
+                  Feedback
                 </Button>
               </Link>
             </div>
