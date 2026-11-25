@@ -104,12 +104,19 @@ describe("SearchForm", () => {
     await user.type(amountInput, "1000000");
     expect(amountInput).toHaveValue(1000000);
 
-    // Clearing controlled numeric input resets state to 0 via `parseFloat(e.target.value) || 0`
+    // Clearing numeric input leaves it empty and disables submission until a positive amount is entered
     await user.clear(amountInput);
-    expect(amountInput).toHaveValue(0);
+    expect(amountInput).toHaveValue(null);
+    const submitBtn = screen.getByRole("button", { name: /compare rates/i });
+    expect(submitBtn).toBeDisabled();
+
+    await user.type(amountInput, "0");
+    expect(submitBtn).toBeDisabled();
+
     await user.clear(amountInput);
     await user.type(amountInput, "250");
-    await user.click(screen.getByRole("button", { name: /compare rates/i }));
+    expect(submitBtn).toBeEnabled();
+    await user.click(submitBtn);
     expect(onSearch).toHaveBeenCalledWith(expect.objectContaining({ amount: 250 }));
   });
 });

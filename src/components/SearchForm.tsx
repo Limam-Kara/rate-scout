@@ -15,22 +15,27 @@ interface SearchFormProps {
 }
 
 export function SearchForm({ onSearch, isLoading, quotes = [], activeCategory = 'all' }: SearchFormProps) {
-  const [amount, setAmount] = useState<number>(100);
+  const [amountInput, setAmountInput] = useState<string>('100');
   const [sendOption, setSendOption] = useState<string>('USD-US');
   const [receiveOption, setReceiveOption] = useState<string>('MAD-MA');
 
+  const parsedAmount = parseFloat(amountInput);
+  const isAmountValid = Number.isFinite(parsedAmount) && parsedAmount > 0;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAmountValid) return;
+
     const send = SEND_OPTIONS.find(o => o.value === sendOption);
     const receive = RECEIVE_OPTIONS.find(o => o.value === receiveOption);
-    
+
     if (send && receive) {
-      onSearch({ 
-        amount, 
-        sendCurr: send.currency, 
-        recvCurr: receive.currency, 
-        sendCty: send.country, 
-        recvCty: receive.country 
+      onSearch({
+        amount: parsedAmount,
+        sendCurr: send.currency,
+        recvCurr: receive.currency,
+        sendCty: send.country,
+        recvCty: receive.country,
       });
     }
   };
@@ -89,8 +94,8 @@ export function SearchForm({ onSearch, isLoading, quotes = [], activeCategory = 
           </span>
           <Input
             type="number"
-            value={amount}
-            onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
+            value={amountInput}
+            onChange={(e) => setAmountInput(e.target.value)}
             className="pl-11 pr-20 h-14 text-2xl font-bold tabular-nums bg-secondary/30 border border-border/60 hover:border-border focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/25 focus-visible:bg-background transition-all rounded-xl"
             min={1}
             step="0.01"
@@ -180,7 +185,7 @@ export function SearchForm({ onSearch, isLoading, quotes = [], activeCategory = 
         variant="hero"
         size="xl"
         className="w-full group rounded-xl"
-        disabled={isLoading}
+        disabled={isLoading || !isAmountValid}
       >
         {isLoading ? (
           <>

@@ -1,17 +1,25 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import Components from "./pages/Components";
-import Aboutus from "./pages/aboutus";
-import Feedback from "./pages/feedback";
-import NotFound from "./pages/NotFound";
-import Privacy_policy from "./pages/Privacy_policy";
-import Terms_of_service from "./pages/terms_of_service";
+
+const Components = lazy(() => import("./pages/Components"));
+const Aboutus = lazy(() => import("./pages/aboutus"));
+const Feedback = lazy(() => import("./pages/feedback"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const PrivacyPolicy = lazy(() => import("./pages/Privacy_policy"));
+const TermsOfService = lazy(() => import("./pages/terms_of_service"));
 
 const queryClient = new QueryClient();
+
+const RouteFallback = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -19,18 +27,19 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/components" element={<Components />} />
-          <Route path="/aboutus" element={<Aboutus />} />
-          <Route path="/feedback" element={<Feedback />} />
-          <Route path="/privacy-policy" element={<Privacy_policy />} />
-          <Route path="/terms-of-service" element={<Terms_of_service />} />
+        <Suspense fallback={<RouteFallback />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/components" element={<Components />} />
+            <Route path="/aboutus" element={<Aboutus />} />
+            <Route path="/feedback" element={<Feedback />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
 
-
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

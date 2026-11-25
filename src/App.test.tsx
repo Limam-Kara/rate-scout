@@ -17,7 +17,7 @@ describe("App routing & Header active state", () => {
     window.history.pushState({}, "", "/aboutus");
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: /about transfercompare/i })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /about transfercompare/i })).toBeInTheDocument();
 
     const aboutNavBtn = screen.getAllByRole("link", { name: /about us/i })[0].querySelector("button");
     expect(aboutNavBtn).toHaveClass("bg-primary/10", "text-primary");
@@ -32,27 +32,27 @@ describe("App routing & Header active state", () => {
     expect(screen.getByText(/select your sending and receiving countries/i)).toBeVisible();
   });
 
-  it("renders /feedback, /privacy-policy, /terms-of-service, and 404 NotFound", () => {
+  it("renders /feedback, /privacy-policy, /terms-of-service, and 404 NotFound", async () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
 
     window.history.pushState({}, "", "/feedback");
     const { unmount } = render(<App />);
-    expect(screen.getByRole("heading", { name: /hear from you/i })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /hear from you/i })).toBeInTheDocument();
     unmount();
 
     window.history.pushState({}, "", "/privacy-policy");
     const r2 = render(<App />);
-    expect(screen.getByRole("heading", { name: /privacy seriously/i })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /privacy seriously/i })).toBeInTheDocument();
     r2.unmount();
 
     window.history.pushState({}, "", "/terms-of-service");
     const r3 = render(<App />);
-    expect(screen.getByRole("heading", { name: /terms of service/i })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /terms of service/i })).toBeInTheDocument();
     r3.unmount();
 
     window.history.pushState({}, "", "/non-existent-route");
     const r4 = render(<App />);
-    expect(screen.getByText("404")).toBeInTheDocument();
+    expect(await screen.findByText("404")).toBeInTheDocument();
     r4.unmount();
 
     vi.restoreAllMocks();
