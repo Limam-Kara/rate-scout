@@ -1,15 +1,5 @@
-import { Link } from 'react-router-dom';
-import { 
-  ArrowRightLeft, 
-  Globe, 
-  Sparkles, 
-  LayoutGrid, 
-  Info, 
-  MessageSquare,
-  Instagram,
-  Youtube,
+import {
   ScrollText,
-  ShieldAlert,
   Scale,
   ExternalLink,
   Mail,
@@ -21,6 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Footer } from '@/components/Footer';
+import { Header } from '@/components/Header';
 
 
 export default function TermsOfService() {
@@ -34,60 +25,7 @@ export default function TermsOfService() {
       </div>
 
       {/* Header */}
-      <header className="relative z-50 border-b border-border/30 glass sticky top-0 bg-background/80 backdrop-blur-md">
-        <div className="container max-w-7xl py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo Section */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-primary rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
-                <div className="relative p-2.5 rounded-xl bg-primary shadow-lg">
-                  <ArrowRightLeft className="w-5 h-5 text-primary-foreground" />
-                </div>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-foreground tracking-tight">
-                  Transfer<span className="text-primary">Compare</span>
-                </h1>
-                <p className="text-xs text-muted-foreground font-medium">Premium rate finder</p>
-              </div>
-            </Link>
-            
-            {/* Right Actions */}
-            <div className="hidden md:flex items-center gap-4">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mr-2">
-                <Globe className="w-4 h-4" />
-                <span className="hidden lg:inline">200+ Countries</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mr-2">
-                <Sparkles className="w-4 h-4" />
-                <span className="hidden lg:inline">Real-time rates</span>
-              </div>
-
-              <Link to="/components">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <LayoutGrid className="w-4 h-4" />
-                  <span className="hidden lg:inline">Components</span>
-                </Button>
-              </Link>
-
-              <Link to="/aboutus">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Info className="w-4 h-4" />
-                  About Us
-                </Button>
-              </Link>
-
-              <Link to="/feedback">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <MessageSquare className="w-4 h-4" />
-                  Feedback
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main className="relative z-10 flex-grow">
         <div className="mx-auto max-w-4xl px-6 py-20 space-y-12">
@@ -104,7 +42,7 @@ export default function TermsOfService() {
               Last updated: October 2025
             </p>
             <p className="text-muted-foreground text-lg leading-relaxed">
-              Welcome to ArbitrageX. By accessing or using our website and services, you agree to be bound by these Terms. Please read them carefully.
+              Welcome to TransferCompare. By accessing or using our website and services, you agree to be bound by these Terms. Please read them carefully.
             </p>
           </header>
 
@@ -118,10 +56,10 @@ export default function TermsOfService() {
               <CardContent className="p-8 space-y-4">
                 <h2 className="text-xl font-bold flex items-center gap-3 text-foreground">
                   <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-sm font-bold">1</span>
-                  About ArbitrageX
+                  About TransferCompare
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  ArbitrageX is an independent comparison platform that helps users find the best and cheapest way to send money internationally. We compare exchange rates, transfer fees, and delivery times from leading providers like Wise, Remitly, Western Union, Revolut, and others. We are not a money transfer provider ourselves, we do not hold or transmit money, nor do we execute transactions on behalf of users. Our goal is to make international money transfers transparent, affordable, and easy to compare.
+                  TransferCompare is an independent comparison platform that helps users find the best and cheapest way to send money internationally. We compare exchange rates, transfer fees, and delivery times from leading providers like Wise, Remitly, Western Union, Revolut, and others. We are not a money transfer provider ourselves, we do not hold or transmit money, nor do we execute transactions on behalf of users. Our goal is to make international money transfers transparent, affordable, and easy to compare.
                 </p>
               </CardContent>
             </Card>
@@ -134,12 +72,12 @@ export default function TermsOfService() {
                   2. Acceptance of Terms
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground pb-6 leading-relaxed">
-                  <p className="mb-4">By using ArbitrageX, you confirm that:</p>
+                  <p className="mb-4">By using TransferCompare, you confirm that:</p>
                   <ul className="list-disc pl-5 space-y-2">
                     <li>You are at least 18 years old or have reached the legal age of majority in your jurisdiction.</li>
                     <li>You have read, understood, and agreed to these Terms.</li>
                     <li>You comply with all applicable laws when using the platform.</li>
-                    <li>If you are using ArbitrageX on behalf of a company or organization, you represent that you have the authority to bind that entity to these Terms.</li>
+                    <li>If you are using TransferCompare on behalf of a company or organization, you represent that you have the authority to bind that entity to these Terms.</li>
                   </ul>
                 </AccordionContent>
               </AccordionItem>
@@ -149,7 +87,7 @@ export default function TermsOfService() {
                   3. Our Services
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground pb-6 leading-relaxed">
-                  <p className="mb-4">ArbitrageX provides:</p>
+                  <p className="mb-4">TransferCompare provides:</p>
                   <ul className="list-disc pl-5 space-y-2 mb-4">
                     <li>Comparison tools for international money transfer services.</li>
                     <li>Up-to-date data on exchange rates, fees, and transfer options.</li>
@@ -164,7 +102,7 @@ export default function TermsOfService() {
                   4. Our Relationship with Providers
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground pb-6 leading-relaxed">
-                  ArbitrageX partners with various money transfer companies and financial institutions. When you click on a provider's offer and complete a transfer on their platform, you are entering into a direct agreement with that provider, not with ArbitrageX. Some providers may pay ArbitrageX a referral commission when you use our comparison links. However, this does not affect the ranking or impartiality of our comparisons. Our recommendations are based solely on transparency, cost, and reliability.
+                  TransferCompare partners with various money transfer companies and financial institutions. When you click on a provider's offer and complete a transfer on their platform, you are entering into a direct agreement with that provider, not with TransferCompare. Some providers may pay TransferCompare a referral commission when you use our comparison links. However, this does not affect the ranking or impartiality of our comparisons. Our recommendations are based solely on transparency, cost, and reliability.
                 </AccordionContent>
               </AccordionItem>
 
@@ -173,13 +111,13 @@ export default function TermsOfService() {
                   5. User Responsibilities
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground pb-6 leading-relaxed">
-                  <p className="mb-4">When using ArbitrageX, you agree to:</p>
+                  <p className="mb-4">When using TransferCompare, you agree to:</p>
                   <ul className="list-disc pl-5 space-y-2">
                     <li>Provide accurate information when prompted.</li>
                     <li>Not attempt to disrupt, hack, or misuse the website.</li>
-                    <li>Respect the intellectual property rights of ArbitrageX and its partners.</li>
+                    <li>Respect the intellectual property rights of TransferCompare and its partners.</li>
                     <li>Verify any financial information before making a decision.</li>
-                    <li>Accept that ArbitrageX is not liable for losses resulting from reliance on third-party data or services.</li>
+                    <li>Accept that TransferCompare is not liable for losses resulting from reliance on third-party data or services.</li>
                   </ul>
                 </AccordionContent>
               </AccordionItem>
@@ -195,7 +133,7 @@ export default function TermsOfService() {
                     <h3 className="font-bold text-foreground">Limitation of Liability</h3>
                   </div>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    ArbitrageX does not provide financial or investment advice. All comparisons are for informational purposes only. To the fullest extent permitted by law, ArbitrageX shall not be liable for any financial losses, direct or indirect damages, or errors resulting from using the Service.
+                    TransferCompare does not provide financial or investment advice. All comparisons are for informational purposes only. To the fullest extent permitted by law, TransferCompare shall not be liable for any financial losses, direct or indirect damages, or errors resulting from using the Service.
                   </p>
                 </CardContent>
               </Card>
@@ -207,7 +145,7 @@ export default function TermsOfService() {
                     <h3 className="font-bold text-foreground">Accuracy & Availability</h3>
                   </div>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    We make every effort to keep our information accurate. However, we cannot guarantee that all rates are correct at all times or that the platform will be uninterrupted. ArbitrageX is provided on an “as is” and “as available” basis.
+                    We make every effort to keep our information accurate. However, we cannot guarantee that all rates are correct at all times or that the platform will be uninterrupted. TransferCompare is provided on an “as is” and “as available” basis.
                   </p>
                 </CardContent>
               </Card>
@@ -229,7 +167,7 @@ export default function TermsOfService() {
                      <Scale className="w-4 h-4 text-primary" /> 9. Modifications
                   </h3>
                   <p className="text-muted-foreground text-sm">
-                    We may update these Terms from time to time. When we do, we will revise the “Last Updated” date at the top of this page. Continued use of ArbitrageX after updates constitutes your acceptance.
+                    We may update these Terms from time to time. When we do, we will revise the “Last Updated” date at the top of this page. Continued use of TransferCompare after updates constitutes your acceptance.
                   </p>
                 </div>
               </CardContent>
@@ -243,8 +181,10 @@ export default function TermsOfService() {
             <p className="text-muted-foreground">
               If you have any questions about these Terms, please contact us.
             </p>
-            <Button size="lg" className="mt-4 gap-2" variant="outline">
-              <Mail className="w-4 h-4" /> contact@arbitragex.com
+            <Button size="lg" className="mt-4 gap-2" variant="outline" asChild>
+              <a href="mailto:contact@transfercompare.com">
+                <Mail className="w-4 h-4" /> contact@transfercompare.com
+              </a>
             </Button>
           </section>
 

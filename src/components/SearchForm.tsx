@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { SearchParams, SEND_OPTIONS, RECEIVE_OPTIONS, Quote } from '@/types/quote';
-import { ArrowRight, Search, ArrowDownUp } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { SearchParams, SEND_OPTIONS, RECEIVE_OPTIONS, Quote, CategoryFilter, matchesQuoteCategory } from '@/types/quote';
+import { ArrowDown, ArrowDownUp, ArrowRight, Search } from 'lucide-react';
 import { CurrencyCombobox } from './CurrencyCombobox';
 
 interface SearchFormProps {
   onSearch: (params: SearchParams) => void;
   isLoading: boolean;
   quotes?: Quote[];
-  activeCategory?: 'all' | 'bank' | 'cash';
+  activeCategory?: CategoryFilter;
 }
 
 export function SearchForm({ onSearch, isLoading, quotes = [], activeCategory = 'all' }: SearchFormProps) {
@@ -37,18 +38,15 @@ export function SearchForm({ onSearch, isLoading, quotes = [], activeCategory = 
   const selectedSend = SEND_OPTIONS.find(o => o.value === sendOption);
   const selectedReceive = RECEIVE_OPTIONS.find(o => o.value === receiveOption);
 
+  const canSwap = Boolean(
+    RECEIVE_OPTIONS.find(o => o.value === sendOption) &&
+    SEND_OPTIONS.find(o => o.value === receiveOption)
+  );
+
   const handleSwap = () => {
-    const tempSend = sendOption;
-    const tempReceive = receiveOption;
-    
-    // Check if swap is possible
-    const sendInReceive = RECEIVE_OPTIONS.find(o => o.value === tempSend);
-    const receiveInSend = SEND_OPTIONS.find(o => o.value === tempReceive);
-    
-    if (sendInReceive && receiveInSend) {
-      setSendOption(tempReceive);
-      setReceiveOption(tempSend);
-    }
+    if (!canSwap) return;
+    setSendOption(receiveOption);
+    setReceiveOption(sendOption);
   };
 
   // Calculate best recipient amount based on active category
@@ -56,12 +54,7 @@ export function SearchForm({ onSearch, isLoading, quotes = [], activeCategory = 
     if (quotes.length === 0) return null;
 
     // Filter quotes by category
-    const filteredQuotes = quotes.filter((quote) => {
-      if (activeCategory === 'all') return true;
-      if (activeCategory === 'bank') return quote.category.toLowerCase().includes('bancaire');
-      if (activeCategory === 'cash') return quote.category.toLowerCase().includes('espèces');
-      return true;
-    });
+    const filteredQuotes = quotes.filter((quote) => matchesQuoteCategory(quote.category, activeCategory));
 
     if (filteredQuotes.length === 0) return null;
 
@@ -84,24 +77,29 @@ export function SearchForm({ onSearch, isLoading, quotes = [], activeCategory = 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       {/* You Send Section */}
-      <div className="space-y-3">
-        <Label className="text-sm font-semibold text-foreground uppercase tracking-wide">
+      <div className="space-y-2.5">
+        <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
           You send
         </Label>
         <div className="relative">
-          <span className="absolute left-5 top-1/2 -translate-y-1/2 text-xl font-bold text-muted-foreground">
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-bold text-muted-foreground">
             {selectedSend?.symbol}
           </span>
           <Input
             type="number"
             value={amount}
             onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
-            className="pl-14 h-16 text-3xl font-bold bg-secondary/30 border-2 border-transparent hover:border-border focus:border-primary focus:bg-background transition-all rounded-xl"
+            className="pl-11 pr-20 h-14 text-2xl font-bold tabular-nums bg-secondary/30 border border-border/60 hover:border-border focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/25 focus-visible:bg-background transition-all rounded-xl"
             min={1}
             step="0.01"
           />
+          {selectedSend && (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-full bg-background border border-border/60 text-xs font-semibold text-foreground shadow-sm">
+              {selectedSend.currency}
+            </span>
+          )}
         </div>
         <CurrencyCombobox
           options={SEND_OPTIONS}
@@ -111,35 +109,62 @@ export function SearchForm({ onSearch, isLoading, quotes = [], activeCategory = 
         />
       </div>
 
-      {/* Swap Button */}
-      <div className="flex justify-center">
-        <button
-          type="button"
-          onClick={handleSwap}
-          className="group p-3 rounded-full bg-secondary/50 hover:bg-secondary border-2 border-border hover:border-primary/30 transition-all duration-300 hover:scale-110"
-        >
-          <ArrowDownUp className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-        </button>
+      {/* Swap / Direction Divider */}
+      <div className="relative flex items-center justify-center py-1">
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t border-border/60" />
+        <Tooltip>
+          <TooltipTrigger asChild>
+            {canSwap ? (
+              <button
+                type="button"
+                onClick={handleSwap}
+                aria-label="Swap currencies"
+                className="relative z-10 group p-2.5 rounded-full bg-card border border-border/60 shadow-sm hover:border-primary/50 hover:bg-primary/5 transition-all duration-200 cursor-pointer"
+              >
+                <ArrowDownUp className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </button>
+            ) : (
+              <span
+                aria-label="One-way transfer corridor"
+                className="relative z-10 inline-flex items-center justify-center p-2 rounded-full bg-card border border-border/60 text-muted-foreground cursor-default"
+              >
+                <ArrowDown className="w-4 h-4" />
+              </span>
+            )}
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>
+              {canSwap
+                ? 'Swap sending and receiving currencies'
+                : 'One-way corridor: swap unavailable for this currency pair'}
+            </p>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       {/* Recipient Gets Section */}
-      <div className="space-y-3">
-        <Label className="text-sm font-semibold text-foreground uppercase tracking-wide">
+      <div className="space-y-2.5">
+        <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
           Recipient gets
         </Label>
-        <div className={`h-16 rounded-xl border-2 flex items-center px-5 transition-all ${
-          bestAmount 
-            ? 'bg-accent/5 border-accent/30' 
-            : 'bg-secondary/30 border-dashed border-border/50'
+        <div className={`h-14 rounded-xl border flex items-center justify-between px-4 transition-all ${
+          bestAmount
+            ? 'bg-primary/5 border-primary/30'
+            : 'bg-secondary/30 border-dashed border-border/60'
         }`}>
-          <span className={`text-2xl font-bold ${bestAmount ? 'text-accent' : 'text-muted-foreground/60'}`}>
+          <span className={`text-2xl font-bold tabular-nums ${bestAmount ? 'text-primary' : 'text-muted-foreground'}`}>
             {selectedReceive?.symbol}{' '}
             {bestAmount ? (
               <span className="animate-fade-in">{formatAmount(bestAmount)}</span>
             ) : (
-              <span className="animate-pulse">—</span>
+              <span>—</span>
             )}
           </span>
+          {selectedReceive && (
+            <span className="px-2.5 py-1 rounded-full bg-background border border-border/60 text-xs font-semibold text-foreground shadow-sm">
+              {selectedReceive.currency}
+            </span>
+          )}
         </div>
         <CurrencyCombobox
           options={RECEIVE_OPTIONS}
@@ -154,7 +179,7 @@ export function SearchForm({ onSearch, isLoading, quotes = [], activeCategory = 
         type="submit"
         variant="hero"
         size="xl"
-        className="w-full group"
+        className="w-full group rounded-xl"
         disabled={isLoading}
       >
         {isLoading ? (

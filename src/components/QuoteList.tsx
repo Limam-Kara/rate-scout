@@ -1,22 +1,23 @@
 import { useState } from 'react';
-import { Quote } from '@/types/quote';
+import { Quote, CategoryFilter, matchesQuoteCategory } from '@/types/quote';
 import { QuoteCard } from './QuoteCard';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle, WifiOff, Building2, Banknote, Layers, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { AlertCircle, WifiOff, Building2, Banknote, Layers, TrendingUp, ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const ITEMS_PER_PAGE = 5;
+
+export type { CategoryFilter };
 
 interface QuoteListProps {
   quotes: Quote[];
   isLoading: boolean;
   isError: boolean;
+  onRetry?: () => void;
   sendCurrency: string;
   recvCurrency: string;
-  onCategoryChange?: (category: 'all' | 'bank' | 'cash') => void;
+  onCategoryChange?: (category: CategoryFilter) => void;
 }
-
-export type CategoryFilter = 'all' | 'bank' | 'cash';
 
 const CATEGORY_FILTERS = [
   { id: 'all' as const, label: 'All', icon: Layers },
@@ -64,7 +65,7 @@ function LoadingSkeleton() {
   );
 }
 
-function ErrorState() {
+function ErrorState({ onRetry }: { onRetry?: () => void }) {
   return (
     <div className="rounded-2xl border-2 border-dashed border-destructive/30 bg-destructive/5 p-16 text-center animate-fade-in">
       <div className="flex justify-center mb-6">
@@ -79,8 +80,18 @@ function ErrorState() {
         Unable to connect
       </h3>
       <p className="text-muted-foreground max-w-md mx-auto">
-        Please check your internet connection and try again.
+        We couldn't retrieve live quotes right now. Please check your internet connection and try again.
       </p>
+      {onRetry && (
+        <Button
+          variant="outline"
+          onClick={onRetry}
+          className="mt-6 gap-2 border-destructive/30 hover:bg-destructive/10"
+        >
+          <RefreshCw className="w-4 h-4" />
+          Try again
+        </Button>
+      )}
     </div>
   );
 }
@@ -106,7 +117,7 @@ function EmptyState() {
   );
 }
 
-export function QuoteList({ quotes, isLoading, isError, sendCurrency, recvCurrency, onCategoryChange }: QuoteListProps) {
+export function QuoteList({ quotes, isLoading, isError, onRetry, sendCurrency, recvCurrency, onCategoryChange }: QuoteListProps) {
   const [activeFilter, setActiveFilter] = useState<CategoryFilter>('all');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -115,7 +126,7 @@ export function QuoteList({ quotes, isLoading, isError, sendCurrency, recvCurren
   }
 
   if (isError) {
-    return <ErrorState />;
+    return <ErrorState onRetry={onRetry} />;
   }
 
   if (quotes.length === 0) {
@@ -123,12 +134,7 @@ export function QuoteList({ quotes, isLoading, isError, sendCurrency, recvCurren
   }
 
   // Filter quotes by category
-  const filteredQuotes = quotes.filter((quote) => {
-    if (activeFilter === 'all') return true;
-    if (activeFilter === 'bank') return quote.category.toLowerCase().includes('bancaire');
-    if (activeFilter === 'cash') return quote.category.toLowerCase().includes('espèces');
-    return true;
-  });
+  const filteredQuotes = quotes.filter((quote) => matchesQuoteCategory(quote.category, activeFilter));
 
   // Sort by recipient_gets (highest first)
   const sortedQuotes = [...filteredQuotes].sort((a, b) => b.recipient_gets - a.recipient_gets);
@@ -146,8 +152,8 @@ export function QuoteList({ quotes, isLoading, isError, sendCurrency, recvCurren
   };
 
   // Count quotes per category
-  const bankCount = quotes.filter(q => q.category.toLowerCase().includes('bancaire')).length;
-  const cashCount = quotes.filter(q => q.category.toLowerCase().includes('espèces')).length;
+  const bankCount = quotes.filter((q) => matchesQuoteCategory(q.category, 'bank')).length;
+  const cashCount = quotes.filter((q) => matchesQuoteCategory(q.category, 'cash')).length;
 
   const getCategoryCount = (id: CategoryFilter) => {
     if (id === 'all') return quotes.length;
@@ -218,6 +224,7 @@ export function QuoteList({ quotes, isLoading, isError, sendCurrency, recvCurren
                 key={`${quote.provider}-${quote.category}`}
                 quote={quote}
                 isBestValue={startIndex + index === 0}
+                bestAmount={sortedQuotes[0]?.recipient_gets}
                 sendCurrency={sendCurrency}
                 recvCurrency={recvCurrency}
                 index={index}

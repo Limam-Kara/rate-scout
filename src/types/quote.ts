@@ -1,3 +1,29 @@
+export type CategoryFilter = 'all' | 'bank' | 'cash';
+
+/** Matches a quote category label (English or French) against the active filter. */
+export function matchesQuoteCategory(category: string, filter: CategoryFilter): boolean {
+  if (filter === 'all') return true;
+  const lower = category.toLowerCase();
+  if (filter === 'bank') {
+    return (
+      lower.includes('bank') ||
+      lower.includes('bancaire') ||
+      lower.includes('dépôt') ||
+      lower.includes('deposit')
+    );
+  }
+  if (filter === 'cash') {
+    return (
+      lower.includes('cash') ||
+      lower.includes('espèces') ||
+      lower.includes('especes') ||
+      lower.includes('pickup') ||
+      lower.includes('retrait')
+    );
+  }
+  return true;
+}
+
 export interface Quote {
   provider: string;
   category: string;

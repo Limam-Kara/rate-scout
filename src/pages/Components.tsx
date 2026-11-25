@@ -40,7 +40,7 @@ export default function Components() {
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-foreground tracking-tight">
-                    Arbitra<span className="text-primary">geX</span>
+                    Transfer<span className="text-primary">Compare</span>
                   </h1>
                   <p className="text-xs text-muted-foreground font-medium">UI Components</p>
                 </div>
@@ -470,13 +470,13 @@ export default function Components() {
           <h2 className="text-2xl font-bold text-foreground">Got Questions?</h2>
           <Accordion type="single" collapsible className="space-y-3">
             {[
-              { q: 'What is ArbitrageX?', a: 'ArbitrageX is a comparison platform that helps you find the best exchange rates and lowest fees for international money transfers. We compare multiple providers to help you save money on every transaction.' },
+              { q: 'What is TransferCompare?', a: 'TransferCompare is a comparison platform that helps you find the best exchange rates and lowest fees for international money transfers. We compare multiple providers to help you save money on every transaction.' },
               { q: 'How do I compare money transfer services?', a: 'Simply enter the amount you want to send, select your sending and receiving currencies, and click "Compare Rates". We\'ll show you real-time quotes from multiple providers sorted by the best value.' },
-              { q: 'Is ArbitrageX free to use?', a: 'Yes! ArbitrageX is completely free for users. We earn a small commission from providers when you use our links, but this never affects our rankings or recommendations.' },
+              { q: 'Is TransferCompare free to use?', a: 'Yes! TransferCompare is completely free for users. We earn a small commission from providers when you use our links, but this never affects our rankings or recommendations.' },
               { q: 'Which countries can I send money to?', a: 'We support transfers to over 200 countries worldwide. The available providers and rates may vary depending on your sending country and destination.' },
-              { q: 'Can I trust the providers listed on ArbitrageX?', a: 'Absolutely. We only list licensed and regulated money transfer providers. Each provider is vetted for security, reliability, and customer service quality.' },
-              { q: 'Do I need an account to use ArbitrageX?', a: 'No account is needed to compare rates. However, you\'ll need to create an account with your chosen provider to complete your transfer.' },
-              { q: 'Does ArbitrageX handle the transfers?', a: 'No, we are a comparison service only. Once you select a provider, you\'ll be redirected to their website to complete your transfer directly with them.' },
+              { q: 'Can I trust the providers listed on TransferCompare?', a: 'Absolutely. We only list licensed and regulated money transfer providers. Each provider is vetted for security, reliability, and customer service quality.' },
+              { q: 'Do I need an account to use TransferCompare?', a: 'No account is needed to compare rates. However, you\'ll need to create an account with your chosen provider to complete your transfer.' },
+              { q: 'Does TransferCompare handle the transfers?', a: 'No, we are a comparison service only. Once you select a provider, you\'ll be redirected to their website to complete your transfer directly with them.' },
             ].map((faq, i) => (
               <AccordionItem 
                 key={i} 
@@ -586,7 +586,7 @@ export default function Components() {
       {/* Footer */}
       <footer className="border-t border-border mt-16 py-8">
         <div className="container max-w-7xl text-center text-sm text-muted-foreground">
-          <p>ArbitrageX UI Components Library • Built with React, Tailwind CSS & shadcn/ui</p>
+          <p>TransferCompare UI Components Library • Built with React, Tailwind CSS & shadcn/ui</p>
         </div>
       </footer>
     </div>

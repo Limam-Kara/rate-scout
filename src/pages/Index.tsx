@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { SearchForm } from '@/components/SearchForm';
 import { QuoteList } from '@/components/QuoteList';
@@ -7,11 +6,10 @@ import { TransferProviders } from '@/components/TransferProviders';
 import { ExchangeRates } from '@/components/ExchangeRates';
 import { AdvertiserDisclosure } from '@/components/AdvertiserDisclosure';
 import { Footer } from '@/components/Footer';
-import { fetchQuotes, mockQuotes } from '@/lib/api';
-import { SearchParams, Quote } from '@/types/quote';
-import { ArrowRightLeft, Shield, Zap, TrendingUp, Sparkles, Globe, ArrowRight, LayoutGrid,MessageSquare ,Info} from 'lucide-react';
-import { CategoryFilter } from '@/components/QuoteList';
-import { Button } from '@/components/ui/button';
+import { Header } from '@/components/Header';
+import { fetchQuotes } from '@/lib/api';
+import { SearchParams, CategoryFilter } from '@/types/quote';
+import { ArrowRightLeft, Shield, Zap, TrendingUp, Sparkles, ArrowRight } from 'lucide-react';
 
 
 export default function Index() {
@@ -19,7 +17,7 @@ export default function Index() {
   const [hasSearched, setHasSearched] = useState(false);
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all');
 
-  const { data: quotes, isLoading, isError } = useQuery({
+  const { data: quotes, isLoading, isError, refetch } = useQuery({
     queryKey: ['quotes', searchParams],
     queryFn: () => searchParams ? fetchQuotes(searchParams) : Promise.resolve([]),
     enabled: !!searchParams,
@@ -31,10 +29,10 @@ export default function Index() {
     setHasSearched(true);
   };
 
-  const displayQuotes = isError && hasSearched ? mockQuotes : (quotes || []);
+  const displayQuotes = quotes || [];
 
   return (
-    <div className="min-h-screen gradient-hero relative overflow-hidden">
+    <div className="min-h-screen gradient-hero relative overflow-x-clip">
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] rounded-full bg-primary/5 blur-3xl animate-pulse-slow" />
@@ -45,97 +43,48 @@ export default function Index() {
       </div>
 
       {/* Header */}
-      <header className="relative z-50 border-b border-border/30 glass sticky top-0">
-        <div className="container max-w-7xl py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="absolute inset-0 gradient-primary rounded-xl blur-lg opacity-50" />
-                <div className="relative p-2.5 rounded-xl gradient-primary shadow-lg">
-                  <ArrowRightLeft className="w-5 h-5 text-primary-foreground" />
-                </div>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-foreground tracking-tight">
-                  Transfer<span className="text-gradient">Compare</span>
-                </h1>
-                <p className="text-xs text-muted-foreground font-medium">Premium rate finder</p>
-              </div>
-            </div>
-            
-            <div className="hidden md:flex items-center gap-6">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Globe className="w-4 h-4" />
-                <span>200+ Countries</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Sparkles className="w-4 h-4" />
-                <span>Real-time rates</span>
-              </div>
-              {/* <Link to="/components">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <LayoutGrid className="w-4 h-4" />
-                  UI Components
-                </Button>
-              </Link> */}
-               <Link to="/aboutus">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Info className="w-4 h-4" />
-                  About Us
-                </Button>
-              </Link>
-
-              <Link to="/feedback">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <MessageSquare className="w-4 h-4" />
-                  Feedback
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Content */}
-      <main className="relative z-10 container max-w-7xl py-8 md:py-16">
-        <div className="grid lg:grid-cols-[420px_1fr] gap-8 lg:gap-16">
+      <main className="relative z-10 container max-w-7xl py-8 md:py-14">
+        <div className="grid lg:grid-cols-[420px_1fr] gap-8 lg:gap-12 items-start">
           {/* Search Panel */}
-          <div className="space-y-8 animate-slide-up">
+          <div className="space-y-6 lg:sticky lg:top-24 lg:self-start animate-slide-up">
             {/* Hero Text */}
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-border/50 text-sm font-medium text-muted-foreground">
-                <Sparkles className="w-4 h-4 text-primary" />
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/90 border border-border/60 shadow-sm text-xs font-semibold text-muted-foreground">
+                <Sparkles className="w-3.5 h-3.5 text-primary" />
                 Smart comparison engine
               </div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-foreground leading-[1.1] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold text-foreground leading-[1.1] tracking-tight">
                 Find the <span className="text-gradient">best rates</span> for your transfer
-              </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              </h1>
+              <p className="text-base text-muted-foreground leading-relaxed">
                 Compare exchange rates and fees from trusted providers in seconds. Save more on every transaction.
               </p>
             </div>
 
             {/* Search Card */}
-            <div className="glass-card rounded-2xl shadow-xl p-6 md:p-8 hover-lift">
+            <div className="rounded-2xl border border-border/60 bg-card shadow-sm p-6 md:p-7">
               <SearchForm onSearch={handleSearch} isLoading={isLoading} quotes={displayQuotes} activeCategory={activeCategory} />
             </div>
 
             {/* Features */}
             <div className="grid grid-cols-3 gap-3">
               {[
-                { icon: TrendingUp, label: 'Best Rates', color: 'text-accent' },
-                { icon: Zap, label: 'Instant', color: 'text-primary' },
-                { icon: Shield, label: 'Secure', color: 'text-muted-foreground' },
-              ].map((feature, i) => (
-                <div 
+                { icon: TrendingUp, label: 'Best Rates', desc: 'Live comparison', color: 'text-accent' },
+                { icon: Zap, label: 'Instant', desc: 'Real-time quotes', color: 'text-primary' },
+                { icon: Shield, label: 'Secure', desc: 'Trusted partners', color: 'text-foreground' },
+              ].map((feature) => (
+                <div
                   key={feature.label}
-                  className="group flex flex-col items-center text-center p-4 rounded-xl glass-card hover-lift cursor-default"
-                  style={{ animationDelay: `${(i + 1) * 100}ms` }}
+                  className="group flex flex-col items-center text-center p-3.5 rounded-xl bg-card/90 border border-border/60 shadow-sm hover:shadow-md transition-all cursor-default"
                 >
-                  <div className={`p-3 rounded-xl bg-secondary/50 mb-3 group-hover:scale-110 transition-transform duration-300`}>
-                    <feature.icon className={`w-5 h-5 ${feature.color}`} />
+                  <div className="p-2.5 rounded-xl bg-secondary/70 mb-2 group-hover:scale-105 transition-transform duration-200">
+                    <feature.icon className={`w-4 h-4 ${feature.color}`} />
                   </div>
                   <span className="text-xs font-semibold text-foreground">{feature.label}</span>
+                  <span className="text-[11px] text-muted-foreground mt-0.5 leading-tight">{feature.desc}</span>
                 </div>
               ))}
             </div>
@@ -166,7 +115,8 @@ export default function Index() {
               <QuoteList
                 quotes={displayQuotes}
                 isLoading={isLoading}
-                isError={isError && !mockQuotes.length}
+                isError={isError}
+                onRetry={() => refetch()}
                 sendCurrency={searchParams?.sendCurr || 'USD'}
                 recvCurrency={searchParams?.recvCurr || 'MAD'}
                 onCategoryChange={setActiveCategory}

@@ -22,7 +22,7 @@
     --secondary-foreground: 220 30% 20%;
 
     --muted: 220 20% 94%;
-    --muted-foreground: 220 15% 45%;
+    --muted-foreground: 220 16% 36%;
 
     --accent: 165 80% 45%;
     --accent-foreground: 0 0% 100%;
@@ -82,7 +82,7 @@
     --secondary-foreground: 220 20% 90%;
 
     --muted: 230 25% 16%;
-    --muted-foreground: 220 15% 55%;
+    --muted-foreground: 220 15% 65%;
 
     --accent: 165 80% 50%;
     --accent-foreground: 230 25% 8%;
@@ -130,6 +130,10 @@
 }
 
 @layer utilities {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
   .gradient-primary {
     background: var(--gradient-primary);
   }

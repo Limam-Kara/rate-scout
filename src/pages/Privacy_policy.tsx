@@ -1,13 +1,4 @@
-import { Link } from 'react-router-dom';
-import { 
-  ArrowRightLeft, 
-  Globe, 
-  Sparkles, 
-  LayoutGrid, 
-  Info, 
-  MessageSquare,
-  Instagram,
-  Youtube,
+import {
   ShieldCheck,
   Eye,
   Lock,
@@ -23,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
 import { Footer } from '@/components/Footer';
+import { Header } from '@/components/Header';
 
 
 export default function PrivacyPolicy() {
@@ -36,60 +28,7 @@ export default function PrivacyPolicy() {
       </div>
 
       {/* Header */}
-      <header className="relative z-50 border-b border-border/30 glass sticky top-0 bg-background/80 backdrop-blur-md">
-        <div className="container max-w-7xl py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo Section */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-primary rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
-                <div className="relative p-2.5 rounded-xl bg-primary shadow-lg">
-                  <ArrowRightLeft className="w-5 h-5 text-primary-foreground" />
-                </div>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-foreground tracking-tight">
-                  Transfer<span className="text-primary">Compare</span>
-                </h1>
-                <p className="text-xs text-muted-foreground font-medium">Premium rate finder</p>
-              </div>
-            </Link>
-            
-            {/* Right Actions */}
-            <div className="hidden md:flex items-center gap-4">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mr-2">
-                <Globe className="w-4 h-4" />
-                <span className="hidden lg:inline">200+ Countries</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mr-2">
-                <Sparkles className="w-4 h-4" />
-                <span className="hidden lg:inline">Real-time rates</span>
-              </div>
-
-              <Link to="/components">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <LayoutGrid className="w-4 h-4" />
-                  <span className="hidden lg:inline">Components</span>
-                </Button>
-              </Link>
-
-              <Link to="/aboutus">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Info className="w-4 h-4" />
-                  About Us
-                </Button>
-              </Link>
-
-              <Link to="/feedback">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <MessageSquare className="w-4 h-4" />
-                  Feedback
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main className="relative z-10 flex-grow">
         <div className="mx-auto max-w-5xl px-6 py-20 space-y-16">
@@ -242,8 +181,10 @@ export default function PrivacyPolicy() {
             <p className="text-muted-foreground">
               We're here to help. If you have any questions about how your data is used, please contact our team.
             </p>
-            <Button size="lg" className="mt-4 gap-2" variant="outline">
-              <Mail className="w-4 h-4" /> contact@transfercompare.com
+            <Button size="lg" className="mt-4 gap-2" variant="outline" asChild>
+              <a href="mailto:contact@transfercompare.com">
+                <Mail className="w-4 h-4" /> contact@transfercompare.com
+              </a>
             </Button>
           </section>
 
